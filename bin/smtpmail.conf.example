@@ -1,0 +1,19 @@
+
+// smtpmail config file
+// Pieter De Ridder
+// 
+// On Windows, this configfile needs to reside in the "current" folder.
+// On Unix (Linux or Solaris), this config file needs to reside under "/etc" or "current" folder.
+// The name of the config file needs to be of format "<executable name>.conf".
+
+
+server=smtpserver.domain.com
+port=25
+authuser=myuser@domainx.com
+authpwd=password
+frommail=fromuser@domainx.com
+subject=smtpmail test
+body=test message from smtpmail client program
+authlogin=0
+verbose=0
+silent=0
