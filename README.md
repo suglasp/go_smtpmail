@@ -22,12 +22,12 @@ windows x64, solaris 11.3 (intel x64), linux x64 (Linux Mint)
 
 ### unsupported (so far, to be implemented)
 - attachments
-
+- hashing of user and password in config file (in case used on a public shared folder)
 
 
 ### cmdline parameters:
 ```sh
-./smtpmail -s smtp.domain.ext -p 25 -f from@domain.ext -t to1@domain.ext,to2@domain.ext -b "mail message" -sub "mail subject" -u <authuser> -pwd <password> [-al|-ap] [-q] [-c <config file>|-nf] [-v|-debug]
+./smtpmail -s smtpsrv.domain.ext -p 25 -f frommail@domain.ext -t tomail1@domain.ext,tomail2@domain.ext -b "mail message" -sub "mail subject" -u <authuser> -pwd <password> [-al|-ap] [-q] [-c <config file>|-nf] [-v|-debug]
 ```
 
 ### expanded cmdline parameters:
@@ -50,7 +50,7 @@ windows x64, solaris 11.3 (intel x64), linux x64 (Linux Mint)
 ### cmdline piping input
 You can pipe input \( \| \) to smtpmail. For example:
 ```sh
-echo "some text to be mailed" | smtpmail -s mtp.domain.ext -p 25 -f from@domain.ext -t to@domain.ext -u <authuser> -pwd <password>
+echo "some text to be mailed" | smtpmail -s smtpsrv.domain.ext -p 25 -f frommail@domain.ext -t tomail@domain.ext -u <authuser> -pwd <password>
 ```
 
 By piping a string to smtpmail, the piped input string will be used as mail body. And by default, if -sub (subject) is not provided, the first characters of the input string (up to 30 chars) will be used as subject. Notice that if the subject and body are set through the config file, the config file will overwrite the piped input ( see also paragraph on config file ). 
@@ -98,7 +98,9 @@ Because the config file takes precendence over piped input and cmdline arguments
 ### Authentication method:
 AUTH LOGIN and AUTH PLAIN, serve the purpose of the smtp server authentication method.
 I\'ve noticed that MS Exchange servers from MS Exchange 2010 or upward, prefer to use `AUTH LOGIN` instead of `AUTH PLAIN`.
-The authentication method can be changed with the parameters ´-ap´ or ´al´ from the cmdline or by setting `authlogin=` to 0 or 1 in the config file.  
+The authentication method can be changed with the parameters ´-ap´ or ´al´ from the cmdline or by setting `authlogin=` to 0 or 1 in the config file.
+
+User credentials can be provided on the cmdline arguments using -u (user) and -p (password). Notice for sending mails in a Windows Domain, you need to sue -u user@domain as user account.
 
 ### TLS encryption:
 smtpmail wil automatically try using plain or TLS encryption. This is a buildin feature of the GOLANG `net/smtp` package.
