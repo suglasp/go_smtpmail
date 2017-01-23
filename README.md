@@ -1,17 +1,17 @@
-smtpmail
+## smtpmail
 
 simple smtp mail cmdline client written in GO (GOLANG)
 
 
-os versions supported (using gc): 
+### os versions supported (using gc): 
 windows (x86 and x64), linux, solaris 11 (intel x64), freebsd, openbsd, dragonfly, darwin (mac os) 
 
 
-os versions tested:
+### os versions tested:
 windows x64, solaris 11.3 (intel x64), linux x64 (Linux Mint)
 
 
-cmdline parameters:
+### cmdline parameters:
 -s <smtp server>
 -p <smtp port> (default 25)
 -f <from>
@@ -27,8 +27,7 @@ cmdline parameters:
 -c <config file>
 -nf
 
-
-expanded cmdline parameters:
+### expanded cmdline parameters:
 -s          =>  -smtpserver or -server
 -p          =>  -smtpport or -port
 -u          =>  -user
@@ -45,14 +44,14 @@ expanded cmdline parameters:
 -nf         =>  -nofile, -skip, -skipconfig
 
 
-verbose and debugging
+### verbose and debugging
  Parameter '-verbose' outputs basic operational information.
 
  Parameter '-debug' has no short versions. Instead you can use '-walk' or '-dump', but those serve the same purpose as -debug. 
  Debug can be used as a "very verbose" function.
 
 
-config file naming convention and location:
+### config file naming convention and location:
  The smtpmail.conf.example config file can be used. Simply copy file and rename it to smtpmail.conf. (*)
 
  On Windows, the config file should be placed in the working directory.
@@ -80,14 +79,14 @@ config file naming convention and location:
  The order does not matter.
 
  
-Authentication method:
+### Authentication method:
  Auth login and auth plain, serve the purpose of the smtp server authentication method.
  I've noticed that MS Exchange servers from MS Exchange 2010 or upward, need to use auth login instead of auth plain.
 
 
-TLS encryption:
+### TLS encryption:
  smtpmail wil automatically try using plain or TLS encryption. This is a buildin feature of the GOLANG net/smtp package.
 
 
-Encoding:
+### Encoding:
  smtpmail always uses base64 encoding in the mail header it sends.
