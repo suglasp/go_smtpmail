@@ -1,11 +1,29 @@
 # smtpmail
 simple smtp mail cmdline client written in GO (GOLANG)
 
+
 ### os versions supported (using the default GOLANG gc compiler): 
 windows (x86 and x64), linux, solaris 11 (intel x64), freebsd, openbsd, dragonfly, darwin (mac os) 
 
+
 ### os versions I have tested:
 windows x64, solaris 11.3 (intel x64), linux x64 (Linux Mint)
+
+
+### supported features
+- base64 encoding<br />
+- possibility to use cmdline arguments and/or config file settings<br />
+- supports piped input from cmdline<br />
+- crossplatform support<br />
+- AUTH LOGIN and AUTH PLAIN authentication
+- plain and TLS encryption (out-of-the-box supported by GOLANG)
+
+
+
+### unsupported (so far, to be implemented)
+- attachments
+
+
 
 ### cmdline parameters:
 ```sh
@@ -29,14 +47,26 @@ windows x64, solaris 11.3 (intel x64), linux x64 (Linux Mint)
 -nf = -nofile, -skip, -skipconfig<br />
 
 
-### verbose and debugging
-Parameter `-verbose` outputs basic operational information.
+### cmdline piping input
+You can pipe input \( \| \) to smtpmail. For example:
+```sh
+echo "some text to be mailed" | smtpmail -s mtp.domain.ext -p 25 -f from@domain.ext -t to@domain.ext -u <authuser> -pwd <password>
+```
 
-Parameter `-debug`  has no short versions. Instead you can use `-walk` or `-dump`, but those serve the same purpose as `-debug`. Debug can be seen as a "very verbose" parameter.
+By piping a string to smtpmail, the piped input string will be used as mail body. And by default, if -sub (subject) is not provided, the first characters of the input string (up to 30 chars) will be used as subject. Notice that if the subject and body are set through the config file, the config file will overwrite the piped input ( see also paragraph on config file ). 
+
+
+### verbose output
+Parameter `-verbose` outputs basic operational information. You can use the short version `-v` instead of `-verbose`.
+
+
+### debug output
+Parameter `-debug`  has no short version. Instead you can use `-walk` or `-dump`, but those serve the same purpose as `-debug`. Debug can be seen as a "very verbose" parameter.
+
 
 
 ### config file naming convention and location:
-The `smtpmail.conf.example` config file can be used. Simply copy file and rename it to smtpmail.conf. \(*\)
+The `smtpmail.conf.example` config file can be used as skeleton to create a working config file. Simply copy the .example file and rename it to `smtpmail.conf`. \(*\)
 
 On Windows, the config file should be placed in the working directory (!= current directory).
 On unix/bsd/mac flavors, the same rule applies then for Windows, but the file may also reside under folder `/etc`.
@@ -62,7 +92,9 @@ config file structure follows the following rules/parameters:
 
 The order of paramter appearance in the config file, does not matter.
 
- 
+Because the config file takes precendence over piped input and cmdline arguments, always be aware if you want to provide or use custom input for subject and body to exclude those lines in the config file. You can do this by, simple deleting the lines `body=` and `subject=` or by placing them in comment.
+
+
 ### Authentication method:
 AUTH LOGIN and AUTH PLAIN, serve the purpose of the smtp server authentication method.
 I\'ve noticed that MS Exchange servers from MS Exchange 2010 or upward, prefer to use `AUTH LOGIN` instead of `AUTH PLAIN`.
